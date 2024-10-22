@@ -1,0 +1,8 @@
+signed main() {
+    fasttype;
+    int tests = 1;
+    //    cin >> tests;
+    while (tests-- > 0) {
+        solve();
+    }
+}

@@ -3,3 +3,8 @@
 //
 
 #include "Translator.h"
+
+
+void Translator::run() {
+    std::cout << "All is OK\n";
+}

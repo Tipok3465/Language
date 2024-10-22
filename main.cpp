@@ -1,52 +1,8 @@
 #include "iostream"
+#include "src/back/Translator.h"
 
 int32_t main() {
-    std::cout << "All is OK\n";
+    Translator translator{};
+    translator.run();
     return 0;
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
-    // to do prak
 }

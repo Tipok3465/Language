@@ -1,14 +1,18 @@
 //
 // Created by Данил Подлягин on 22.10.2024.
 //
+#pragma once
 
-#ifndef LANGUAGE_TRANSLATOR_H
-#define LANGUAGE_TRANSLATOR_H
 
+#include "LexicalAnalyzer.h"
+
+#include "iostream"
 
 class Translator {
-
+public:
+    Translator() = default;
+    void run();
+private:
+    LexicalAnalyzer lex_analyzer_;
 };
 
-
-#endif //LANGUAGE_TRANSLATOR_H
