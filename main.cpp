@@ -1,7 +1,7 @@
 #include "iostream"
 #include "src/back/Translator.h"
 
-int32_t main() {
+int main() {
     Translator translator{};
     translator.run();
     return 0;

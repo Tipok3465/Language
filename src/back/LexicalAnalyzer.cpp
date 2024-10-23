@@ -9,5 +9,15 @@ LexicalAnalyzer::LexicalAnalyzer() {
     f.read(code_text_, static_cast<std::streamsize>(size));
     std::cout << code_text_ << "\n-------------------------------------\n";
     f.close();
+    createBor();
+}
 
+void LexicalAnalyzer::createBor() {
+    std::ifstream f("../src/lexemes.txt");
+    while (f) {
+        std::string lex;
+        f >> lex;
+        bor.add(lex);
+    }
+    f.close();
 }

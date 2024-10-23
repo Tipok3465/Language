@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Lexeme.h"
+#include "Bor.h"
 
 #include "fstream"
 #include "iostream"
@@ -15,5 +16,9 @@ public:
     LexicalAnalyzer();
 private:
     char* code_text_;
+    Bor bor;
+
+    void createBor();
 };
+
 
