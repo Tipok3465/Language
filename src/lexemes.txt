@@ -1,0 +1,13 @@
+for
+while
+from
+to
+if
+else
+func
+integer
+float
+bool
+char
+array
+string
