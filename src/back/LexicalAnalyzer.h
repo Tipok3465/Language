@@ -14,11 +14,22 @@
 class LexicalAnalyzer {
 public:
     LexicalAnalyzer();
+    ~LexicalAnalyzer();
+    Lexeme getLexeme();
 private:
     char* code_text_;
-    Bor bor;
+    int size_;
+    Bor serviceBor_;
+    Bor operatorBor_;
+    std::ifstream fin;
+    int cur_;
+    int id_;
+    int line_;
 
-    void createBor();
+    void createServiceBor();
+    void createOperatorBor();
+    char getSymbol();
+    bool contains(int leftBorder, int rightBorder, int val);
 };
 
 
