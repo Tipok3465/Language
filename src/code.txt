@@ -1,7 +1,9 @@
-signed main() {
+integer main() {
     fasttype;
     int tests = 1;
-    cin >> tests;
+    string s = "AAA\n";
+    bashfhueawbf123koaf134 = 123;
+    a = 1; // tests = input();
     while (tests-- > 0) {
         solve();
     }

@@ -8,6 +8,8 @@
 #include <string>
 #include <map>
 
+#include "Lexeme.h"
+
 class Bor {
 public:
     Bor();

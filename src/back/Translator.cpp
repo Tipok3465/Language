@@ -7,11 +7,13 @@
 #include "LexicalAnalyzer.h"
 
 void Translator::run() {
-    LexicalAnalyzer analyzer;
-    Lexeme lexeme = analyzer.getLexeme();
+    Lexeme lexeme = lex_analyzer_.getLexeme();
     while (lexeme.getType() != LexemeType::EndOfFile) {
-        std::cout << "Lexeme: " << lexeme.getName() << '\n' << "Id: " << lexeme.getId() << '\n';
-        lexeme = analyzer.getLexeme();
+        std::cout << "Lexeme: " << lexeme.getName() << "    ";
+        std::cout << "Type: " << lexeme.toString() << "    ";
+        std::cout << "Line: " << lexeme.getId() << '\n';
+        std::cout << "-------------------------------------\n";
+        lexeme = lex_analyzer_.getLexeme();
     }
     std::cout << "All is OK\n";
 }

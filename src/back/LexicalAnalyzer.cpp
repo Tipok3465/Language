@@ -40,7 +40,7 @@ void LexicalAnalyzer::createOperatorBor() {
 Lexeme LexicalAnalyzer::getLexeme() {
     char c = getSymbol();
     while (c == EOF || c == ' ' || c == '\n') {
-        if (c == EOF) return {"End of file", LexemeType::EndOfFile, id_};
+        if (c == EOF) return {"End of file", LexemeType::EndOfFile, line_};
         if (c == '\n') ++line_;
         c = getSymbol();
     }
@@ -51,10 +51,8 @@ Lexeme LexicalAnalyzer::getLexeme() {
             if (c == EOF) throw "Not ended literal";
             s.push_back(c);
             c = getSymbol();
-
         }
-        --cur_;
-        return {s, LexemeType::Literal, id_};
+        return {s, LexemeType::Literal, line_};
     }
     if (contains('0', '9', c)) {
         std::string s;
@@ -63,7 +61,7 @@ Lexeme LexicalAnalyzer::getLexeme() {
             c = getSymbol();
         }
         --cur_;
-        return {s, LexemeType::Literal, id_};
+        return {s, LexemeType::Literal, line_};
     }
     if (contains('a', 'z', c) || contains('A', 'Z', c) || contains('_', '_', c)) {
         std::string s;
@@ -75,28 +73,36 @@ Lexeme LexicalAnalyzer::getLexeme() {
         if (c != EOF) --cur_;
         return {s,
                 serviceBor_.check(s) ? LexemeType::Service : LexemeType::Identifier,
-                id_};
+                line_};
     }
     if (operatorBor_.check(std::string{c})) {
         char nc = getSymbol();
         std::string s{c, nc};
-        if (operatorBor_.check(s)) return {s, LexemeType::Operator, id_};
+        if (s == "//") {
+            c = getSymbol();
+            while (c != '\n') c = getSymbol();
+            ++line_;
+            return getLexeme();
+        }
+        if (operatorBor_.check(s)) {
+            return {s, LexemeType::Operator, line_};
+        }
         --cur_;
         s.pop_back();
-        return {s, LexemeType::Operator, id_};
+        return {s, LexemeType::Operator, line_};
     }
     switch (c) {
-        case '.': return {".", LexemeType::Dot, id_};
-        case ',': return {",", LexemeType::Comma, id_};
-        case '(': return {"(", LexemeType::OpenBrace, id_};
-        case ')': return {")", LexemeType::CloseBrace, id_};
-        case ';': return {";", LexemeType::EndOfLine, id_};
-        case '[': return {"[", LexemeType::SquareBrace, id_};
-        case ']': return {"]", LexemeType::SquareBrace, id_};
-        case '{': return {"{", LexemeType::Brace, id_};
-        case '}': return {"}", LexemeType::Brace, id_};
+        case '.': return {".", LexemeType::Dot, line_};
+        case ',': return {",", LexemeType::Comma, line_};
+        case '(': return {"(", LexemeType::OpenBrace, line_};
+        case ')': return {")", LexemeType::CloseBrace, line_};
+        case ';': return {";", LexemeType::EndOfLine, line_};
+        case '[': return {"[", LexemeType::SquareBrace, line_};
+        case ']': return {"]", LexemeType::SquareBrace, line_};
+        case '{': return {"{", LexemeType::Brace, line_};
+        case '}': return {"}", LexemeType::Brace, line_};
     }
-    return {"Error", LexemeType::Error, id_};
+    return {"Error", LexemeType::Error, line_};
 }
 
 char LexicalAnalyzer::getSymbol() {
