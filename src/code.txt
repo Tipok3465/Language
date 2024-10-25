@@ -1,10 +1,17 @@
 integer main() {
     fasttype;
-    int tests = 1;
+    integer tests = 1;
+    a+++++++b;
     string s = "AAA\n";
+    #;
+    int x = 1.125;
     bashfhueawbf123koaf134 = 123;
     a = 1; // tests = input();
     while (tests-- > 0) {
+        // aaaaaaa
         solve();
+
+        forif fi if for a+=b++=c;
+        34.45.67    98(  98)  98{  56ty
     }
 }

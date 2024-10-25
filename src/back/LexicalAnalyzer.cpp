@@ -56,12 +56,19 @@ Lexeme LexicalAnalyzer::getLexeme() {
     }
     if (contains('0', '9', c)) {
         std::string s;
+        int cnt = 0;
         while (contains('0', '9', c)) {
             s.push_back(c);
             c = getSymbol();
+            if (c == '.') {
+                s.push_back(c);
+                ++cnt;
+                c = getSymbol();
+            }
         }
         --cur_;
-        return {s, LexemeType::Literal, line_};
+        if (cnt <= 1) return {s, LexemeType::Literal, line_};
+        else return {s, LexemeType::Error, line_};
     }
     if (contains('a', 'z', c) || contains('A', 'Z', c) || contains('_', '_', c)) {
         std::string s;
@@ -102,7 +109,7 @@ Lexeme LexicalAnalyzer::getLexeme() {
         case '{': return {"{", LexemeType::Brace, line_};
         case '}': return {"}", LexemeType::Brace, line_};
     }
-    return {"Error", LexemeType::Error, line_};
+    return {{c}, LexemeType::Error, line_};
 }
 
 char LexicalAnalyzer::getSymbol() {

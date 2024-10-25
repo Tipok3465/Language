@@ -14,7 +14,6 @@ class Bor {
 public:
     Bor();
     ~Bor();
-
     void add(const std::string& s);
     bool check(const std::string& s) const;
 private:
