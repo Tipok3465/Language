@@ -12,7 +12,7 @@
 
 <block> ::= “{” {<expression>} “}”
 
-<expression> ::= <initialization> | <calculation> | <assignment> | <condition> | <for_loop> | <while_loop> | “break” | “continue” | <switch> | <return> “;” 
+<expression> ::=  <initialization> | <calculation> | <assignment> | <condition> | <for_loop> | <while_loop> | “break” | “continue” | <switch> | <return> “;” 
 ----------------------------------------------------------------------------------------------------------------
 <for_loop> ::= “for” “(” <for_base> | <for_each> | <for_number> “)” <block> | <expression>
 
@@ -20,17 +20,19 @@
 
 <for_each> ::= <type> <identifier> “in” <identifier>
 
-<for_number> ::= <literal> “to” | “until” <literal> [ “step” <literal> ]
+<for_number> ::= <literal> (“to” | “until”) <literal> [ “step” <literal> ]
 
 <while_loop> ::= “while” “(” <calc8> “)” <block> | <expression>
 ----------------------------------------------------------------------------------------------------------------
 <assignment> ::= <identifier> “=” <calc8>
 
-<initialization> ::= [ “const” ] <type> “:” <assignment> {, <assignment> }
+<initialization> ::= [ “const” ] <type> “:” <assignment> {, <assignment> } | <array_initiaization>
+
+<array_initiaization> ::= "array<"type">" <identifier>";"
 
 <literal> ::= digit { digit } [ “.” ] { digit } | ‘“‘ {symbol} ‘“‘
 
-<condition> ::= “if” “(” <calculation> “)” <block> | <expression> [ “else” <block> | <expression> ]
+<condition> ::= “if” “(” <calculation> “)” (<block> | <expression>) [ “else” (<block> | <expression>) ]
 ----------------------------------------------------------------------------------------------------------------
 <calculation> ::= { <assignment> “,” } <calc8>
 
@@ -58,9 +60,9 @@
 
 <operator2> ::= “++” | “--”
 
-<calc1> ::= <identifier> | <function> | <literal> | <method> | “(” <calc8> “)”
+<calc1> ::= <identifier>"["<calculation>"]" | <identifier> | <function> | <literal> | <method> | “(” <calc8> “)”
 ----------------------------------------------------------------------------------------------------------------
-<method> ::= <identifier>”.”<function>
+<method> ::= (<identifier> | <identifier>"["<calculation>"]")”.”<function>
 
 <switch> ::= “switch” “(” <identifier> “)” “{” 
 	{ “case” “(” <literal> “)” <block> | <expression> }
@@ -70,4 +72,3 @@
 <identifier> ::= letter | “_” { letter | digit | “_” }
 
 <type> ::= integer | float | bool | char | string | array<type> | void
-
