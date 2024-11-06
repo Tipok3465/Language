@@ -4,13 +4,15 @@
 
 <main> ::= “Main” <block> | <expression>
 
-<function_definition> ::= <type>”<-”<identifier> “(“ [<type> <identifier>] {“,” <type> <identifier>}”)” <block> | <expression>
+<return> ::= "return" [<calculation>]";"
 
-<function> ::= <identifier> “(“ [<type> <identifier>] {“,” <type> <identifier>}”)
+<function_definition> ::= <type>”<-”<identifier> “(“ [<type> <identifier>{“,” <type> <identifier>}]”)” <block> | <expression>
+
+<function> ::= <identifier> “(“[<calculation>{“,” <calculation>}]”)
 
 <block> ::= “{” {<expression>} “}”
 
-<expression> ::= <initialization> | <calculation> | <assignment> | <condition> | <for_loop> | <while_loop> | “break” | “continue” | <switch>“;”
+<expression> ::= <initialization> | <calculation> | <assignment> | <condition> | <for_loop> | <while_loop> | “break” | “continue” | <switch> | <return> “;” 
 ----------------------------------------------------------------------------------------------------------------
 <for_loop> ::= “for” “(” <for_base> | <for_each> | <for_number> “)” <block> | <expression>
 
