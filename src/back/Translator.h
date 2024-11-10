@@ -5,14 +5,19 @@
 
 
 #include "LexicalAnalyzer.h"
-
 #include "iostream"
 
 class Translator {
 public:
-    Translator() = default;
+    Translator() {
+        activeState = [&]() { startState(); };
+    }
     void run();
+    void update();
 private:
     LexicalAnalyzer lex_analyzer_;
+    std::function<void()> activeState;
+    void startState();
+    void nextState();
 };
 

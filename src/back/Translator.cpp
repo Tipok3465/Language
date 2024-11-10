@@ -17,3 +17,16 @@ void Translator::run() {
     }
     std::cout << "All is OK\n";
 }
+
+void Translator::update() {
+    activeState();
+}
+
+void Translator::startState() {
+    std::cout << "START" << std::endl;
+    activeState = [&]() { nextState(); };
+}
+
+void Translator::nextState() {
+    std::cout << "NEXT" << std::endl;
+}

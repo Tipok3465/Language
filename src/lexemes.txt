@@ -9,5 +9,6 @@ integer
 float
 bool
 char
+void
 array
 string
