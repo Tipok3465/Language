@@ -2,19 +2,19 @@
 
 <global_definition> ::= <function_definition> | <initialization>
 
-<main> ::= “Main” <block> | <expression>
+<main> ::= “Main” <block> | <operator>
 
 <return> ::= "return" [<calculation>]";"
 
-<function_definition> ::= <type>”<-”<identifier> “(“ [<type> <identifier>{“,” <type> <identifier>}]”)” <block> | <expression>
+<function_definition> ::= <type>”<-”<identifier> “(“ [<type> <identifier>{“,” <type> <identifier>}]”)” <block> | <operator>
 
 <function> ::= <identifier> “(“[<calculation>{“,” <calculation>}]”)
 
-<block> ::= “{” {<expression>} “}”
+<block> ::= “{” {<operator>} “}”
 
-<expression> ::=  <initialization> | <calculation> | <assignment> | <condition> | <for_loop> | <while_loop> | “break” | “continue” | <switch> | <return> “;” 
+<operator> ::=  <initialization> | <calculation> | <assignment> | <condition> | <for_loop> | <while_loop> | “break” | “continue” | <switch> | <return> “;” 
 ----------------------------------------------------------------------------------------------------------------
-<for_loop> ::= “for” “(” <for_base> | <for_each> | <for_number> “)” <block> | <expression>
+<for_loop> ::= “for” “(” <for_base> | <for_each> | <for_number> “)” <block> | <operator>
 
 <for_base> ::= [<assignment> | <initialization> ] { “,” <assignment> | <initialization> } “;” <calc8> “;” <calc8>
 
@@ -22,7 +22,7 @@
 
 <for_number> ::= <literal> (“to” | “until”) <literal> [ “step” <literal> ]
 
-<while_loop> ::= “while” “(” <calc8> “)” <block> | <expression>
+<while_loop> ::= “while” “(” <calc8> “)” <block> | <operator>
 ----------------------------------------------------------------------------------------------------------------
 <assignment> ::= <identifier> “=” <calc8>
 
@@ -32,7 +32,7 @@
 
 <literal> ::= digit { digit } [ “.” ] { digit } | ‘“‘ {symbol} ‘“‘
 
-<condition> ::= “if” “(” <calculation> “)” (<block> | <expression>) [ “else” (<block> | <expression>) ]
+<condition> ::= “if” “(” <calculation> “)” (<block> | <operator>) [ “else” (<block> | <operator>) ]
 ----------------------------------------------------------------------------------------------------------------
 <calculation> ::= { <assignment> “,” } <calc8>
 
@@ -65,8 +65,8 @@
 <method> ::= (<identifier> | <identifier>"["<calculation>"]")”.”<function>
 
 <switch> ::= “switch” “(” <identifier> “)” “{” 
-	{ “case” “(” <literal> “)” <block> | <expression> }
-	[ “default” <block> | <expression> ]
+	{ “case” “(” <literal> “)” <block> | <operator> }
+	[ “default” <block> | <operator> ]
 “}”
 
 <identifier> ::= letter | “_” { letter | digit | “_” }
