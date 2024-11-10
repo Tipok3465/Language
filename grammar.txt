@@ -1,0 +1,74 @@
+<program> ::= {<global_definition>} <main>
+
+<global_definition> ::= <function_definition> | <initialization>
+
+<main> ::= “Main” <block> | <operator>
+
+<return> ::= "return" [<calculation>]";"
+
+<function_definition> ::= <type>”<-”<identifier> “(“ [<type> <identifier>{“,” <type> <identifier>}]”)” <block> | <operator>
+
+<function> ::= <identifier> “(“[<calculation>{“,” <calculation>}]”)
+
+<block> ::= “{” {<operator>} “}”
+
+<operator> ::=  <initialization> | <calculation> | <assignment> | <condition> | <for_loop> | <while_loop> | “break” | “continue” | <switch> | <return> “;” 
+----------------------------------------------------------------------------------------------------------------
+<for_loop> ::= “for” “(” <for_base> | <for_each> | <for_number> “)” <block> | <operator>
+
+<for_base> ::= [<assignment> | <initialization> ] { “,” <assignment> | <initialization> } “;” <calc8> “;” <calc8>
+
+<for_each> ::= <type> <identifier> “in” <identifier>
+
+<for_number> ::= <literal> (“to” | “until”) <literal> [ “step” <literal> ]
+
+<while_loop> ::= “while” “(” <calc8> “)” <block> | <operator>
+----------------------------------------------------------------------------------------------------------------
+<assignment> ::= <identifier> “=” <calc8>
+
+<initialization> ::= [ “const” ] <type> “:” <assignment> {, <assignment> } | <array_initiaization>
+
+<array_initiaization> ::= "array<"type">" <identifier>";"
+
+<literal> ::= digit { digit } [ “.” ] { digit } | ‘“‘ {symbol} ‘“‘
+
+<condition> ::= “if” “(” <calculation> “)” (<block> | <operator>) [ “else” (<block> | <operator>) ]
+----------------------------------------------------------------------------------------------------------------
+<calculation> ::= { <assignment> “,” } <calc8>
+
+<calc8> ::= <calc7> { “or” <calc7> }
+
+<calc7> ::= <calc6> { “and” <calc6> }
+
+<calc6> ::= <calc5> { <operator6> <calc5> }
+
+<operator6> ::= “==” | “!=”
+
+<calc5> ::= <calc4> { <operator5> <calc4> }
+
+<operator5> ::= “<” | “<=” | “>” | “>=”
+
+<calc4> ::= <calc3> { <operator4> <calc3> }
+
+<operator4> ::= “+” | “-”
+
+<calc3> ::= <calc2> { <operator3> <calc2> }
+
+<operator3> ::= “*” | “/” | “%”
+
+<calc2> ::= <calc1> { <operator2> <calc1> }
+
+<operator2> ::= “++” | “--”
+
+<calc1> ::= <identifier>"["<calculation>"]" | <identifier> | <function> | <literal> | <method> | “(” <calc8> “)”
+----------------------------------------------------------------------------------------------------------------
+<method> ::= (<identifier> | <identifier>"["<calculation>"]")”.”<function>
+
+<switch> ::= “switch” “(” <identifier> “)” “{” 
+	{ “case” “(” <literal> “)” <block> | <operator> }
+	[ “default” <block> | <operator> ]
+“}”
+
+<identifier> ::= letter | “_” { letter | digit | “_” }
+
+<type> ::= integer | float | bool | char | string | array<type> | void
