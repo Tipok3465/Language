@@ -6,6 +6,7 @@
 
 #include "LexicalAnalyzer.h"
 #include "iostream"
+#include "functional"
 
 class Translator {
 public:
@@ -18,6 +19,12 @@ private:
     LexicalAnalyzer lex_analyzer_;
     std::function<void()> activeState;
     void startState();
-    void nextState();
+    void mainState();
+    void definitionState(std::string type);
+    void constDefinitionState();
+    void functionDefinitionState(std::string type);
+    void variableInitializationState(std::string type, std::string identifier);
+
+    bool isType(Lexeme lexeme);
 };
 

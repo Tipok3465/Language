@@ -16,6 +16,12 @@ void Translator::run() {
         lexeme = lex_analyzer_.getLexeme();
     }
     std::cout << "All is OK\n";
+    int x;
+}
+
+bool Translator::isType(Lexeme lexeme) {
+    return lexeme.getName() == "integer" || lexeme.getName() == "float" || lexeme.getName() == "bool" ||
+           lexeme.getName() == "char" || lexeme.getName() == "void";
 }
 
 void Translator::update() {
@@ -23,10 +29,35 @@ void Translator::update() {
 }
 
 void Translator::startState() {
-    std::cout << "START" << std::endl;
-    activeState = [&]() { nextState(); };
+    Lexeme lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() == LexemeType::Service) {
+        if (lexeme.getName() == "Main") activeState = [&]() { mainState(); };
+        if (isType(lexeme)) activeState = [&]() { definitionState(lexeme.getName()); };
+        if (lexeme.getName() == "const") activeState = [&]() { constDefinitionState(); };
+    }
 }
 
-void Translator::nextState() {
-    std::cout << "NEXT" << std::endl;
+void Translator::constDefinitionState() {
+    Lexeme lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() == LexemeType::Service && isType(lexeme)) activeState = [&]() { definitionState(lexeme.getName()); };
+    else throw lexeme;
+}
+
+void Translator::definitionState(std::string type) {
+    Lexeme lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "<-") activeState = [&]() { functionDefinitionState(type); };
+    else if (lexeme.getType() == LexemeType::Identifier) activeState = [&]() { variableInitializationState(type, lexeme.getName()); };
+    else throw lexeme;
+}
+
+void Translator::functionDefinitionState(std::string type) {
+
+}
+
+void Translator::variableInitializationState(std::string type, std::string identifier) {
+
+}
+
+void Translator::mainState() {
+
 }
