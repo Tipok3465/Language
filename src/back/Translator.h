@@ -10,20 +10,30 @@
 
 class Translator {
 public:
-    Translator() {
-        activeState = [&]() { startState(); };
-    }
+    Translator() = default;
     void run();
-    void update();
+    void startScanning();
 private:
     LexicalAnalyzer lex_analyzer_;
-    std::function<void()> activeState;
+
     void startState();
     void mainState();
     void definitionState(std::string type);
     void constDefinitionState();
     void functionDefinitionState(std::string type);
     void variableInitializationState(std::string type, std::string identifier);
+    void calculationState();
+    void calc8State();
+    void calc7State();
+    void calc6State();
+    void calc5State();
+    void calc4State();
+    void calc3State();
+    void calc2State();
+    void calc1State();
+    void functionCallState();
+    void blockState();
+    void operatorState();
 
     bool isType(Lexeme lexeme);
 };

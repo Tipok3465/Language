@@ -13,5 +13,4 @@ add_executable(Language main.cpp
         src/back/Bor.h
         src/back/Bor.cpp
         src/back/LexicalAnalyzer.h
-        src/back/LexicalAnalyzer.cpp
-        src/back/Fsm.cpp)
+        src/back/LexicalAnalyzer.cpp)

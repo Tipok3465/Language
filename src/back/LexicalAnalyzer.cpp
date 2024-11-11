@@ -37,7 +37,14 @@ void LexicalAnalyzer::createOperatorBor() {
     f.close();
 }
 
+
+
 Lexeme LexicalAnalyzer::getLexeme() {
+    if (!pref_lexemes_.empty()) {
+        Lexeme res = pref_lexemes_.top();
+        pref_lexemes_.pop();
+        return res;
+    }
     char c = getSymbol();
     while (c == EOF || c == ' ' || c == '\n') {
         if (c == EOF) return {"End of file", LexemeType::EndOfFile, line_};
@@ -119,4 +126,9 @@ char LexicalAnalyzer::getSymbol() {
 
 bool LexicalAnalyzer::contains(int leftBorder, int rightBorder, int val) {
     return leftBorder <= val && val <= rightBorder;
+}
+
+void LexicalAnalyzer::getBack(Lexeme lex) {
+    pref_lexemes_.push(lex);
+    return;
 }

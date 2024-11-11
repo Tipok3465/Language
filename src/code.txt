@@ -1,4 +1,12 @@
-integer main() {
+integer <- gcd(integer a, integer b) {
+    while (b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
+}
+
+Main {
     fasttype;
     integer tests = 1;
     a+++++++b;

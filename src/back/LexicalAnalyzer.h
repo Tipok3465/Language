@@ -16,9 +16,11 @@ public:
     LexicalAnalyzer();
     ~LexicalAnalyzer();
     Lexeme getLexeme();
+    void getBack(Lexeme lex);
 private:
     char* code_text_;
     int size_;
+    std::stack<Lexeme> pref_lexemes_;
     Bor serviceBor_;
     Bor operatorBor_;
     std::ifstream fin;

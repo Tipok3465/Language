@@ -13,4 +13,5 @@ void
 array
 string
 Main
-<-
+and
+or
