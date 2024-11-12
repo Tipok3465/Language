@@ -15,3 +15,6 @@ string
 Main
 and
 or
+switch
+case
+default
