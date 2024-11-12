@@ -16,7 +16,6 @@ void Translator::run() {
 //        lexeme = lex_analyzer_.getLexeme();
 //    }
     startScanning();
-    std::cerr << "All is OK\n";
 }
 
 bool Translator::isType(Lexeme lexeme) {
@@ -27,6 +26,7 @@ bool Translator::isType(Lexeme lexeme) {
 void Translator::startScanning() {
     try {
         startState();
+        std::cerr << "All is OK\n";
     } catch (Lexeme lex) {
         if (lex.getType() == LexemeType::Error) {
             std::cerr << "Unknown lexeme: " + lex.getName() << '\n';
@@ -251,7 +251,9 @@ void Translator::calc1State() {
         lex_analyzer_.getBack(lexeme);
         return;
     }
-    throw lexeme;
+    if (!(lexeme.getType() == LexemeType::Operator && lexeme.getName() == "--") &&
+        !(lexeme.getType() != LexemeType::Operator && lexeme.getName() == "++")) throw lexeme;
+    else lex_analyzer_.getBack(lexeme);
 }
 
 void Translator::functionCallState() {

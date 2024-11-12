@@ -14,7 +14,7 @@ Main {
     integer x = 1.125;
     bashfhueawbf123koaf134 = 123;
     a = 1; // tests = input();
-    for (integer a = b/+5; a <= b; --a) {
+    for (integer a = b/5; a <= b; --a) {
         string ans = "void";
         print(ans);
     }
