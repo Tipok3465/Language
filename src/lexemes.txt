@@ -19,3 +19,6 @@ const
 break
 continue
 return
+switch
+case
+default

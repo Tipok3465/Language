@@ -10,6 +10,7 @@
 #include "fstream"
 #include "iostream"
 #include <string>
+#include <stack>
 
 class LexicalAnalyzer {
 public:

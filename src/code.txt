@@ -3,6 +3,14 @@ integer <- gcd(integer a, integer b) {
         a = a % b;
         swap(a, b);
     }
+    switch (a) {
+        case (2) print(5);
+        case (4) {
+            integer c = 1;
+            print(c);
+        }
+        default print(7);
+    }
     return a;
 }
 

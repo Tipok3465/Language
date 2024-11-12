@@ -34,6 +34,7 @@ private:
     void functionCallState();
     void blockState();
     void operatorState();
+    void switchState();
 
     bool isType(Lexeme lexeme);
 };

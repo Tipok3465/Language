@@ -263,7 +263,8 @@ void Translator::functionCallState() {
     if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
     lexeme = lex_analyzer_.getLexeme();
     while (lexeme.getType() != LexemeType::CloseBrace) {
-        if (lexeme.getType() != LexemeType::Identifier) throw lexeme;
+        lex_analyzer_.getBack(lexeme);
+        calculationState();
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::Comma && lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
         if (lexeme.getType() != LexemeType::CloseBrace) lexeme = lex_analyzer_.getLexeme();
@@ -368,8 +369,58 @@ void Translator::operatorState() {
         if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
         return;
     }
+    if (lexeme.getName() == "switch" && lexeme.getType() == LexemeType::Service) {
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
+        calculationState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::Brace && lexeme.getName() != "{") throw lexeme;
+        switchState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::Brace && lexeme.getName() != "}") throw lexeme;
+        return;
+    }
     lex_analyzer_.getBack(lexeme);
     calculationState();
     lexeme = lex_analyzer_.getLexeme();
     if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
+}
+
+void Translator::switchState() {
+    Lexeme lexeme = lex_analyzer_.getLexeme();
+    while (lexeme.getType() == LexemeType::Service && lexeme.getName() == "case") {
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
+        calculationState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
+            lex_analyzer_.getBack(lexeme);
+            blockState();
+        } else {
+            lex_analyzer_.getBack(lexeme);
+            operatorState();
+        }
+        lexeme = lex_analyzer_.getLexeme();
+    }
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "default") {
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
+            blockState();
+            lexeme = lex_analyzer_.getLexeme();
+            if (lexeme.getType() != LexemeType::Brace && lexeme.getName() != "}") throw lexeme;
+            return;
+        }
+        lex_analyzer_.getBack(lexeme);
+        operatorState();
+        return;
+    }
+    if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "}") {
+        lex_analyzer_.getBack(lexeme);
+        return;
+    }
+    throw lexeme;
 }
