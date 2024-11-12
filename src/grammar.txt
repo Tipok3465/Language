@@ -1,2 +1,0 @@
-<program> ::= {<function>}<main>
-<function> ::= <type>”<-”<identifier> “(“ <type> <identifier> {“,”<type> <identifier>}”)”

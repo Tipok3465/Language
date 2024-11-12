@@ -1,6 +1,6 @@
 integer <- gcd(integer a, integer b) {
     while (b) {
-        a %= b;
+        a = a % b;
         swap(a, b);
     }
     return a;
@@ -9,17 +9,17 @@ integer <- gcd(integer a, integer b) {
 Main {
     fasttype;
     integer tests = 1;
-    a+++++++b;
+    a = (a+b)/2 + 1;
     string s = "AAA\n";
-    #;
-    int x = 1.125;
+    integer x = 1.125;
     bashfhueawbf123koaf134 = 123;
     a = 1; // tests = input();
-    while (tests-- > 0) {
+    for (integer a = b/+5; a <= b; --a) {
+        string ans = "void";
+        print(ans);
+    }
+    while (--tests  > 0) {
         // aaaaaaa
         solve();
-
-        forif fi if for a+=b++=c;
-        34.45.67    98(  98)  98{  56ty
     }
 }

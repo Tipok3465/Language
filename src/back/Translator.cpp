@@ -16,12 +16,12 @@ void Translator::run() {
 //        lexeme = lex_analyzer_.getLexeme();
 //    }
     startScanning();
-    std::cout << "All is OK\n";
+    std::cerr << "All is OK\n";
 }
 
 bool Translator::isType(Lexeme lexeme) {
-    return lexeme.getName() == "integer" || lexeme.getName() == "float" || lexeme.getName() == "bool" ||
-           lexeme.getName() == "char" || lexeme.getName() == "void" && lexeme.getType() == LexemeType::Service;
+    return (lexeme.getName() == "integer" || lexeme.getName() == "float" || lexeme.getName() == "bool" ||
+           lexeme.getName() == "char" || lexeme.getName() == "void" || lexeme.getName() == "string") && lexeme.getType() == LexemeType::Service;
 }
 
 void Translator::startScanning() {
@@ -33,20 +33,25 @@ void Translator::startScanning() {
             std::cerr << lex.getId() << " string\n";
         } else {
             std::cerr << "Lexeme in wrong place: " + lex.getName() << '\n';
-            std::cerr << "#" << lex.getId() << " string\n";
+            std::cerr << "Line #" << lex.getId() << "\n";
         }
     }
+    Lexeme lexeme =  lex_analyzer_.getLexeme();
+    std::cerr << "Last lexeme: " + lexeme.getName() << '\n';
+    std::cerr << "Line #" << lexeme.getId() << "\n";
 }
 
 void Translator::startState() {
     Lexeme lexeme = lex_analyzer_.getLexeme();
-    if (lexeme.getType() == LexemeType::Service) {
-        if (lexeme.getName() == "Main" && lexeme.getType() == LexemeType::Service) mainState();
-        if (isType(lexeme)) definitionState(lexeme.getName());
-        if (lexeme.getName() == "const" && lexeme.getType() == LexemeType::Service) constDefinitionState();
+    while (lexeme.getType() != LexemeType::EndOfFile) {
+        if (lexeme.getType() == LexemeType::Error) throw lexeme;
+        if (lexeme.getType() == LexemeType::Service) {
+            if (lexeme.getName() == "Main" && lexeme.getType() == LexemeType::Service) mainState();
+            if (isType(lexeme)) definitionState(lexeme.getName());
+            if (lexeme.getName() == "const" && lexeme.getType() == LexemeType::Service) constDefinitionState();
+        }
+        lexeme = lex_analyzer_.getLexeme();
     }
-    if (lexeme.getType() == LexemeType::Error) throw lexeme;
-
 }
 
 void Translator::constDefinitionState() {
@@ -82,14 +87,14 @@ void Translator::functionDefinitionState(std::string type) {
     if (lexeme.getType() != LexemeType::Identifier) throw lexeme;
     lexeme = lex_analyzer_.getLexeme();
     if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
-    lexeme = lex_analyzer_.getLexeme();
-    while (lexeme.getType() != LexemeType::CloseBrace) {
+    do {
+        lexeme = lex_analyzer_.getLexeme();
         if (!isType(lexeme)) throw lexeme;
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::Identifier) throw lexeme;
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::CloseBrace && lexeme.getType() != LexemeType::Comma) throw lexeme;
-    }
+    } while (lexeme.getType() != LexemeType::CloseBrace);
     lexeme = lex_analyzer_.getLexeme();
     if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
         lex_analyzer_.getBack(lexeme);
@@ -103,7 +108,6 @@ void Translator::functionDefinitionState(std::string type) {
 void Translator::variableInitializationState(std::string type, std::string identifier) {
     Lexeme lexeme = lex_analyzer_.getLexeme();
     if (lexeme.getType() == LexemeType::EndOfLine) {
-        startState();
         return;
     }
     if (lexeme.getType() == LexemeType::Operator && lexeme.getName() == "=") {
@@ -111,7 +115,6 @@ void Translator::variableInitializationState(std::string type, std::string ident
     }
     lexeme = lex_analyzer_.getLexeme();
     if (lexeme.getType() == LexemeType::EndOfLine) {
-        startState();
         return;
     }
     throw lexeme;
@@ -226,8 +229,8 @@ void Translator::calc1State() {
         Lexeme pref_lex = lexeme;
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() == LexemeType::OpenBrace) {
-            lex_analyzer_.getBack(pref_lex);
             lex_analyzer_.getBack(lexeme);
+            lex_analyzer_.getBack(pref_lex);
             functionCallState();
             return;
         }
@@ -241,22 +244,51 @@ void Translator::calc1State() {
             if (lexeme.getType() != LexemeType::SquareBrace || lexeme.getName() != "]") throw lexeme;
             return;
         }
+        if (lexeme.getType() == LexemeType::Operator && lexeme.getName() == "=") {
+            calculationState();
+            return;
+        }
         lex_analyzer_.getBack(lexeme);
         return;
     }
+    throw lexeme;
 }
 
 void Translator::functionCallState() {
-
+    Lexeme lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() != LexemeType::Identifier) throw lexeme;
+    lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
+    lexeme = lex_analyzer_.getLexeme();
+    while (lexeme.getType() != LexemeType::CloseBrace) {
+        if (lexeme.getType() != LexemeType::Identifier) throw lexeme;
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::Comma && lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
+        if (lexeme.getType() != LexemeType::CloseBrace) lexeme = lex_analyzer_.getLexeme();
+    }
 }
 
 void Translator::blockState() {
-
+    Lexeme lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() != LexemeType::Brace || lexeme.getName() != "{") throw lexeme;
+    while (lexeme.getType() != LexemeType::Brace || lexeme.getName() != "}") {
+        operatorState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::Brace || lexeme.getName() != "}") lex_analyzer_.getBack(lexeme);
+    }
 }
 
 void Translator::operatorState() {
     Lexeme lexeme = lex_analyzer_.getLexeme();
-    if (lexeme.getName() == "if" && lexeme.getType() == LexemeType::Service) {
+    if (isType(lexeme)) { // initialization
+        definitionState(lexeme.getName());
+        return;
+    }
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "const") { // const initialization
+        constDefinitionState();
+        return;
+    }
+    if (lexeme.getName() == "if" && lexeme.getType() == LexemeType::Service) { // condition
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
         calculationState();
@@ -270,6 +302,72 @@ void Translator::operatorState() {
         }
         lex_analyzer_.getBack(lexeme);
         operatorState();
+        return;
     }
+    if (lexeme.getName() == "for" && lexeme.getType() == LexemeType::Service) {
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
+        lexeme = lex_analyzer_.getLexeme();
+        if (isType(lexeme)) {
+            definitionState(lexeme.getName());
+        } else {
+            lex_analyzer_.getBack(lexeme);
+            calculationState();
+            lexeme = lex_analyzer_.getLexeme();
+            if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
+        }
+        calculationState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
+        calculationState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
 
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
+            lex_analyzer_.getBack(lexeme);
+            blockState();
+            return;
+        }
+        lex_analyzer_.getBack(lexeme);
+        operatorState();
+        return;
+    }
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "while") {
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
+        calculationState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
+
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
+            lex_analyzer_.getBack(lexeme);
+            blockState();
+            return;
+        }
+        lex_analyzer_.getBack(lexeme);
+        operatorState();
+        return;
+    }
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "break") {
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
+        return;
+    }
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "continue") {
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
+        return;
+    }
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "return") {
+        calculationState();
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
+        return;
+    }
+    lex_analyzer_.getBack(lexeme);
+    calculationState();
+    lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() != LexemeType::EndOfLine) throw lexeme;
 }
