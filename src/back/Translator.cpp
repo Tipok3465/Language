@@ -26,7 +26,7 @@ bool Translator::isType(Lexeme lexeme) {
 void Translator::startScanning() {
     try {
         startState();
-        std::cout << "\e[1;32mOK\n\e[1;33m" << "\e[0m";
+        std::cout << "OK" << '\n';
     } catch (Lexeme lex) {
         if (lex.getType() == LexemeType::Error) {
             std::cerr << "Unknown lexeme: " + lex.getName() << '\n';
@@ -37,8 +37,8 @@ void Translator::startScanning() {
         }
     }
     Lexeme lexeme =  lex_analyzer_.getLexeme();
-    std::cout << "\e[1;32mLast lexeme:  \e[1;33m" << lexeme.getName() << "\e[0m\n";
-    std::cout << "\e[1;32mLine #\e[1;33m" << lexeme.getId() << "\e[0m    ";
+    std::cout << "Last lexeme: " << lexeme.getName() << "\n";
+    std::cout << "Line #" << lexeme.getId() << "\n";
 }
 
 void Translator::startState() {
@@ -49,6 +49,7 @@ void Translator::startState() {
             if (lexeme.getName() == "Main" && lexeme.getType() == LexemeType::Service) mainState();
             else if (isType(lexeme)) definitionState(lexeme.getName());
             else if (lexeme.getName() == "const" && lexeme.getType() == LexemeType::Service) constDefinitionState();
+            else if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "array") arrayInitializationState();
             else throw lexeme;
         } else throw lexeme;
         lexeme = lex_analyzer_.getLexeme();
@@ -308,6 +309,10 @@ void Translator::operatorState() {
         definitionState(lexeme.getName());
         return;
     }
+    if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "array") {
+        arrayInitializationState();
+        return;
+    }
     if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "const") { // const initialization
         constDefinitionState();
         return;
@@ -448,4 +453,15 @@ void Translator::switchState() {
 
 void Translator::arrayInitializationState() {
     Lexeme lexeme = lex_analyzer_.getLexeme();
+    if (lexeme.getType() != LexemeType::Operator || lexeme.getName() != "<-") throw lexeme;
+    lexeme = lex_analyzer_.getLexeme();
+    if (!isType(lexeme)) throw lexeme;
+    lexeme = lex_analyzer_.getLexeme();
+    while (true) {
+        if (lexeme.getType() != LexemeType::Identifier) throw lexeme;
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() == LexemeType::Comma) lexeme = lex_analyzer_.getLexeme();
+        else if (lexeme.getType() == LexemeType::EndOfLine) break;
+        else throw lexeme;
+    }
 }

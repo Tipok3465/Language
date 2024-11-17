@@ -29,6 +29,7 @@ Main {
         if(-6) a=a;
     }
     integer a = -1;
+   array <- bool arr1, arr2;
     while (--tests  >= -b + 0) {
         // aaaaaaa
         solve();
