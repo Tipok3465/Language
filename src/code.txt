@@ -4,29 +4,32 @@ integer <- gcd(integer a, integer b) {
         swap(a, b);
     }
     switch (a) {
-        case (2) print(5);
+        case  (2) print(5);
         case (4) {
-            integer c = 1;
+            integer d = a+b, c;
             print(c);
         }
         default print(7);
     }
-    return a;
+    return a+0* ++ k;
 }
 
 Main {
     fasttype;
-    integer tests = 1;
-    a = (a+b)/2 + 1;
+    integer tests = -1-2-3;
+    a = (a+b)/2/ -1;
+    jirjijgij = --g + rr%("lol kek cheburek");
     string s = "AAA\n";
     integer x = 1.125;
     bashfhueawbf123koaf134 = 123;
     a = 1; // tests = input();
     for (integer a = b/5; a <= b; --a) {
         string ans = "void";
-        print(ans);
+        "print(ans)";
+        if(-6) a=a;
     }
-    while (--tests  > 0) {
+    integer a = -1;
+    while (--tests  >= -b + 0) {
         // aaaaaaa
         solve();
     }

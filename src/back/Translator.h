@@ -22,6 +22,7 @@ private:
     void constDefinitionState();
     void functionDefinitionState(std::string type);
     void variableInitializationState(std::string type, std::string identifier);
+    void arrayInitializationState();
     void calculationState();
     void calc8State();
     void calc7State();

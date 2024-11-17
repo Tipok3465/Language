@@ -7,7 +7,7 @@ LexicalAnalyzer::LexicalAnalyzer() : cur_(0), id_(0), line_(1) {
     f.seekg(0);
     code_text_ = new char[size_];
     f.read(code_text_, static_cast<std::streamsize>(size_));
-    std::cout << code_text_ << "\n-------------------------------------\n";
+//    std::cout << code_text_ << "\n-------------------------------------\n";
     f.close();
     createServiceBor();
     createOperatorBor();
