@@ -1,4 +1,5 @@
 integer <- gcd(integer a, integer b) {
+    array <- float a;
     while (b) {
         a = a % b;
         swap(a, b);
