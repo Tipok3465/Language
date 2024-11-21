@@ -1,8 +1,9 @@
+void g, rr, bashfhueawbf123koaf134;
+
 integer <- gcd(integer a, integer b) {
     array <- float a;
     while (b) {
         a = a % b;
-        swap(a, b);
     }
     switch (a) {
         case  (2) print(5);
@@ -12,27 +13,32 @@ integer <- gcd(integer a, integer b) {
         }
         default print(7);
     }
-    return a+0* ++ k;
+    return a+0;
 }
 
+integer b;
+
+void <- A() print(5);
+
 Main {
-    fasttype;
+    float fasttype;
     integer tests = -1-2-3;
-    a = (a+b)/2/ -1;
-    jirjijgij = --g + rr%("lol kek cheburek");
+    integer a = (a+b)/2/ -1;
+    string jirjijgij = --g + rr%("lol kek cheburek");
     string s = "AAA\n";
     integer x = 1.125;
     bashfhueawbf123koaf134 = 123;
     a = 1; // tests = input();
+    integer ans;
     for (integer a = b/5; a <= b; --a) {
         string ans = "void";
         "print(ans)";
         if(-6) a=a;
     }
-    integer a = -1;
+    a - 1;
    array <- bool arr1, arr2;
     while (--tests  >= -b + 0) {
         // aaaaaaa
-        solve();
+        A();
     }
 }
