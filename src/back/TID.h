@@ -15,6 +15,11 @@ public:
     bool checkID(std::string id) {
         return data_[id] != "";
     }
+
+    std::string getType(std::string id) {
+        if (!checkID(id)) throw Error("Undef");
+        return data_[id];
+    }
 private:
     std::map<std::string, std::string> data_;
 };

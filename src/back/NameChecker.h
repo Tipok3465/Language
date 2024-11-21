@@ -18,6 +18,8 @@ public:
 
     void pushId(std::string type, std::string id);
 
+    std::string getType(std::string id);
+
     void createScope();
 
     void exitScope();

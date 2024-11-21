@@ -35,6 +35,7 @@ Main {
         "print(ans)";
         if(-6) a=a;
     }
+    a = 1;
     a - 1;
    array <- bool arr1, arr2;
     while (--tests  >= -b + 0) {

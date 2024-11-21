@@ -43,3 +43,10 @@ void NameChecker::createScope() {
 void NameChecker::exitScope() {
     cur_ = cur_->p;
 }
+
+std::string NameChecker::getType(std::string id) {
+    if (!checkId(id)) throw Error("Undefined variable " + id);
+    Node* pointer = cur_;
+    while (!pointer->tid.checkID(id)) pointer = pointer->p;
+    return pointer->tid.getType(id);
+}
