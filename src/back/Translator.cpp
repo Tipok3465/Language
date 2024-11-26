@@ -505,7 +505,6 @@ void Translator::operatorState(LexemeType isFunc, bool isLoop) {
         calculationState();
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
-        while (lexeme, 5) {}
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
             lex_analyzer_.getBack(lexeme);

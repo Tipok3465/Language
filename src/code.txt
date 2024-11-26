@@ -1,6 +1,6 @@
 integer <- gcd(integer a, integer b) {
     array <- float arr;
-    integer x = 1 % gcd(gcd("888",4),6);
+    integer x = 0;
     integer vz = arr[4];
     while (b) {
         a = a % b;
