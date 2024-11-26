@@ -9,7 +9,11 @@
 enum class LexemeType {
     Service,
     Identifier,
-    Literal,
+    FloatLiteral,
+    IntegerLiteral,
+    StringLiteral,
+    BoolLiteral,
+    Array,
     Operator,
     Comma,
     Dot,
@@ -24,6 +28,7 @@ enum class LexemeType {
 
 class Lexeme {
 public:
+    Lexeme() = default;
     Lexeme(std::string s, LexemeType type, int id) : name_(std::move(s)), type_(type), code_id_(id) {}
     std::string toString() {
         std::string s;
@@ -32,10 +37,19 @@ public:
                 s = "Service";
                 return s;
             case LexemeType::Identifier:
-                s = "Identifier";
+                s = "identifier";
                 return s;
-            case LexemeType::Literal:
-                s = "Literal";
+            case LexemeType::FloatLiteral:
+                s = "float";
+                return s;
+            case LexemeType::IntegerLiteral:
+                s = "integer";
+                return s;
+            case LexemeType::StringLiteral:
+                s = "string";
+                return s;
+            case LexemeType::BoolLiteral:
+                s = "bool";
                 return s;
             case LexemeType::Operator:
                 s = "Operator";
@@ -67,15 +81,22 @@ public:
             case LexemeType::Error:
                 s = "Error";
                 return s;
+            case LexemeType::Array:
+                s = "array";
+                return s;
         }
     }
     std::string getName() const {return name_;}
-
+    void setName(std::string s) {name_ = s;}
     LexemeType getType() const {return type_;}
-
+    void setType(LexemeType type) {type_ = type;}
     int getId() const {return code_id_;}
+    int setId(int id) {code_id_ = id;}
+    void setValue(bool f) {lvalue_ = f;}
+    bool isLvalue() {return lvalue_;}
 private:
     LexemeType type_;
     int code_id_;
     std::string name_;
+    bool lvalue_ = false;
 };

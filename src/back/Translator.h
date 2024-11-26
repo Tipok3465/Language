@@ -8,6 +8,7 @@
 #include "NameChecker.h"
 #include "iostream"
 #include "functional"
+#include "SemanticStack.h"
 
 class Translator {
 public:
@@ -21,6 +22,7 @@ private:
     LexicalAnalyzer lex_analyzer_;
     NameChecker varChecker_;
     NameChecker funcChecker_;
+    SemanticStack sem_stack_;
 
     void startState();
 
@@ -56,12 +58,14 @@ private:
 
     void functionCallState();
 
-    void blockState();
+    void blockState(LexemeType isFunc, bool isLoop);
 
-    void operatorState();
+    void operatorState(LexemeType isFunc, bool isLoop);
 
-    void switchState();
+    void switchState(LexemeType isFunc, bool isLoop);
 
     bool isType(Lexeme lexeme);
+
+    bool isLiteral(Lexeme lexeme);
 };
 

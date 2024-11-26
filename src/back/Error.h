@@ -1,12 +1,3 @@
-//
-// Created by Egor on 19.11.2024.
-//
-
-#ifndef LANGUAGE_ERROR_H
-#define LANGUAGE_ERROR_H
-
-#endif //LANGUAGE_ERROR_H
-
 #pragma once
 
 #include <exception>

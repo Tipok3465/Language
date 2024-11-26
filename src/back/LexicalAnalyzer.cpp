@@ -59,7 +59,7 @@ Lexeme LexicalAnalyzer::getLexeme() {
             s.push_back(c);
             c = getSymbol();
         }
-        return {s, LexemeType::Literal, line_};
+        return {s, LexemeType::StringLiteral, line_};
     }
     if (contains('0', '9', c)) {
         std::string s;
@@ -74,7 +74,8 @@ Lexeme LexicalAnalyzer::getLexeme() {
             }
         }
         --cur_;
-        if (cnt <= 1) return {s, LexemeType::Literal, line_};
+        if (cnt == 0) return {s, LexemeType::IntegerLiteral, line_};
+        else if (cnt == 1) return {s, LexemeType::FloatLiteral, line_};
         else return {s, LexemeType::Error, line_};
     }
     if (contains('a', 'z', c) || contains('A', 'Z', c) || contains('_', '_', c)) {
@@ -106,15 +107,24 @@ Lexeme LexicalAnalyzer::getLexeme() {
         return {s, LexemeType::Operator, line_};
     }
     switch (c) {
-        case '.': return {".", LexemeType::Dot, line_};
-        case ',': return {",", LexemeType::Comma, line_};
-        case '(': return {"(", LexemeType::OpenBrace, line_};
-        case ')': return {")", LexemeType::CloseBrace, line_};
-        case ';': return {";", LexemeType::EndOfLine, line_};
-        case '[': return {"[", LexemeType::SquareBrace, line_};
-        case ']': return {"]", LexemeType::SquareBrace, line_};
-        case '{': return {"{", LexemeType::Brace, line_};
-        case '}': return {"}", LexemeType::Brace, line_};
+        case '.':
+            return {".", LexemeType::Dot, line_};
+        case ',':
+            return {",", LexemeType::Comma, line_};
+        case '(':
+            return {"(", LexemeType::OpenBrace, line_};
+        case ')':
+            return {")", LexemeType::CloseBrace, line_};
+        case ';':
+            return {";", LexemeType::EndOfLine, line_};
+        case '[':
+            return {"[", LexemeType::SquareBrace, line_};
+        case ']':
+            return {"]", LexemeType::SquareBrace, line_};
+        case '{':
+            return {"{", LexemeType::Brace, line_};
+        case '}':
+            return {"}", LexemeType::Brace, line_};
     }
     return {{c}, LexemeType::Error, line_};
 }

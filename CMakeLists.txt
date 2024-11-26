@@ -14,5 +14,9 @@ add_executable(Language main.cpp
         src/back/Bor.cpp
         src/back/LexicalAnalyzer.h
         src/back/LexicalAnalyzer.cpp
+        src/back/TID.h
+        src/back/Error.h
+        src/back/SemanticStack.h
+        src/back/SemanticStack.cpp
         src/back/NameChecker.h
         src/back/NameChecker.cpp)
