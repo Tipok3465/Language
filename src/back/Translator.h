@@ -58,7 +58,7 @@ private:
 
     void functionCallState();
 
-    void blockState(LexemeType isFunc, bool isLoop);
+    void blockState(LexemeType isFunc, bool isLoop, bool isNewScope = true);
 
     void operatorState(LexemeType isFunc, bool isLoop);
 

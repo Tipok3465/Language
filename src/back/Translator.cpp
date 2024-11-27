@@ -425,9 +425,9 @@ void Translator::functionCallState() {
     if (s != type) throw Error("Undefined function: " + type);
 }
 
-void Translator::blockState(LexemeType isFunc, bool isLoop) {
+void Translator::blockState(LexemeType isFunc, bool isLoop, bool isNewScope) {
     Lexeme lexeme = lex_analyzer_.getLexeme();
-    varChecker_.createScope();
+    if (isNewScope) varChecker_.createScope();
     if (lexeme.getType() != LexemeType::Brace || lexeme.getName() != "{") throw lexeme;
     while (lexeme.getType() != LexemeType::Brace || lexeme.getName() != "}") {
         operatorState(isFunc, isLoop);
@@ -490,7 +490,7 @@ void Translator::operatorState(LexemeType isFunc, bool isLoop) {
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
             lex_analyzer_.getBack(lexeme);
-            blockState(isFunc, isLoop);
+            blockState(isFunc, true, false);
             varChecker_.exitScope();
             return;
         }
@@ -540,6 +540,7 @@ void Translator::operatorState(LexemeType isFunc, bool isLoop) {
         return;
     }
     if (lexeme.getName() == "switch" && lexeme.getType() == LexemeType::Service) {
+        Lexeme switchLexeme = lexeme;
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
         calculationState();
@@ -547,6 +548,7 @@ void Translator::operatorState(LexemeType isFunc, bool isLoop) {
         if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::Brace && lexeme.getName() != "{") throw lexeme;
+        sem_stack_.push(switchLexeme);
         switchState(isFunc, isLoop);
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::Brace && lexeme.getName() != "}") throw lexeme;
@@ -564,6 +566,7 @@ void Translator::switchState(LexemeType isFunc, bool isLoop) {
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
         calculationState();
+        sem_stack_.checkBin();
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
         lexeme = lex_analyzer_.getLexeme();

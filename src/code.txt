@@ -5,7 +5,13 @@ integer <- gcd(integer a, integer b) {
     while (b) {
         a = a % b;
     }
+    switch (5) {
+        case (42) print(4);
+    }
     return a;
+    for (integer a = -52; a > 0; ++a) {
+        break;
+    }
 }
 
 integer b;

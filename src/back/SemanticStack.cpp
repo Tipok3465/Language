@@ -270,6 +270,11 @@ void SemanticStack::checkBin() {
             throw Error("Wrong return type: " + std::to_string(op.getId()));
         }
     }
+    if (op.getName() == "switch") {
+        if (lhs.toString() != rhs.toString()) {
+            throw Error("Wrong switch case: " + rhs.toString());
+        }
+    }
 }
 
 Lexeme SemanticStack::pop() {

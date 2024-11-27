@@ -2,6 +2,7 @@
 // Created by Данил Подлягин on 22.10.2024.
 //
 #pragma once
+
 #include <utility>
 
 #include "string"
@@ -29,7 +30,9 @@ enum class LexemeType {
 class Lexeme {
 public:
     Lexeme() = default;
+
     Lexeme(std::string s, LexemeType type, int id) : name_(std::move(s)), type_(type), code_id_(id) {}
+
     std::string toString() {
         std::string s;
         switch (this->type_) {
@@ -86,17 +89,26 @@ public:
                 return s;
         }
     }
-    std::string getName() const {return name_;}
-    void setName(std::string s) {name_ = s;}
-    LexemeType getType() const {return type_;}
-    void setType(LexemeType type) {type_ = type;}
-    int getId() const {return code_id_;}
-    int setId(int id) {code_id_ = id;}
-    void setValue(bool f) {lvalue_ = f;}
-    bool isLvalue() {return lvalue_;}
+
+    std::string getName() const { return name_; }
+
+    void setName(std::string s) { name_ = s; }
+
+    LexemeType getType() const { return type_; }
+
+    void setType(LexemeType type) { type_ = type; }
+
+    int getId() const { return code_id_; }
+
+    int setId(int id) { return code_id_ = id; }
+
+    void setValue(bool f) { lvalue_ = f; }
+
+    bool isLvalue() { return lvalue_; }
+
 private:
-    LexemeType type_;
-    int code_id_;
-    std::string name_;
+    LexemeType type_ = LexemeType::Error;
+    int code_id_ = 0;
+    std::string name_ = "aboba";
     bool lvalue_ = false;
 };
