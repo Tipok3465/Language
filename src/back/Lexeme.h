@@ -24,7 +24,13 @@ enum class LexemeType {
     CloseBrace,
     EndOfFile,
     EndOfLine,
-    Error
+    Error,
+    PolizField,
+    FuncCall,
+    GoToAnyway,
+    GoToFalse,
+    Return,
+    UnaryMinus
 };
 
 class Lexeme {
@@ -87,6 +93,24 @@ public:
             case LexemeType::Array:
                 s = "array";
                 return s;
+            case LexemeType::PolizField:
+                s = "PolizField";
+                return s;
+            case LexemeType::FuncCall:
+                s = "FuncCall";
+                return s;
+            case LexemeType::GoToAnyway:
+                s = "GoToAnyway";
+                return s;
+            case LexemeType::GoToFalse:
+                s = "GoToFalse";
+                return s;
+            case LexemeType::Return:
+                s = "Return";
+                return s;
+            case LexemeType::UnaryMinus:
+                s = "UnaryMinus";
+                return s;
         }
     }
 
@@ -106,9 +130,17 @@ public:
 
     bool isLvalue() { return lvalue_; }
 
+    void setPriority(int x) {priority_ = x;}
+    int getPriority() {return priority_;}
+
+    void setFieldId(int x) {field_id_ = x;}
+    int getFieldId() {return field_id_;}
+
 private:
     LexemeType type_ = LexemeType::Error;
     int code_id_ = 0;
     std::string name_ = "aboba";
     bool lvalue_ = false;
+    int field_id_ = -1;
+    int priority_ = -1;
 };

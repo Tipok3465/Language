@@ -19,4 +19,6 @@ add_executable(Language main.cpp
         src/back/SemanticStack.h
         src/back/SemanticStack.cpp
         src/back/NameChecker.h
-        src/back/NameChecker.cpp)
+        src/back/NameChecker.cpp
+        src/back/Generator.h
+        src/back/Generator.cpp)

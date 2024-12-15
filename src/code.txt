@@ -1,40 +1,47 @@
 integer <- gcd(integer a, integer b) {
     array <- float arr;
     integer x = 0;
+    gcd(a % b, b);
     integer vz = arr[4];
+    if (vz > 0) {
+        ++a;
+        x = 3;
+    }
     while (b) {
         a = a % b;
     }
-    switch (5) {
-        case (42) print(4);
+    switch (12) {
+        case (23) print(4);
+    }
+    for (integer a = -52; a > 0; ++a) {
+        a = 3;
+        a = a % b;
+        --a;
     }
     return a;
-    for (integer a = -52; a > 0; ++a) {
-        break;
-    }
+
 }
 
 integer b;
 
-void <- A() print(5);
+void <- A() print(5+4*2);
 
 Main {
     float fasttype;
     integer tests = -1-2-3;
     //integer a = (a+b)/2/ -1;
     string s = "AAA\n";
-    integer x = 1.125;
+    integer x = 1;
     float F = 1.0;
     //a = 1; // tests = input();
     integer ans;
     for (integer a = b/5; a <= b; --a) {
-        string ans = "void";
-        string a;
+        string ans = "hihi";
         "print(ans)";
         if(-6) a=a;
     }
    array <- bool arr1, arr2;
-   while (--tests  >= -b + 0, "aaaaa") {
+   while (--tests  >= -b + 0, 1) {
         // aaaaaaa
         A();
    }

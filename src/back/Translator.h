@@ -9,6 +9,7 @@
 #include "iostream"
 #include "functional"
 #include "SemanticStack.h"
+#include "Generator.h"
 
 class Translator {
 public:
@@ -23,6 +24,7 @@ private:
     NameChecker varChecker_;
     NameChecker funcChecker_;
     SemanticStack sem_stack_;
+    Generator generator_;
 
     void startState();
 
