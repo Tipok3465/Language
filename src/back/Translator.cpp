@@ -56,19 +56,41 @@ void Translator::startScanning() {
     }
     Lexeme lexeme = lex_analyzer_.getLexeme();
     std::cout << "Last lexeme: " << lexeme.getName() << "\n";
-    std::cout << "Line #" << lexeme.getId() << "\n";
+    std::cout << "Line #";
+    std::cout << lexeme.getId() << "\n";
     std::cout << "POLIZ:\n";
     std::vector<Lexeme> poliz = generator_.getPoliz();
     for (int i = 0; i < (int)poliz.size(); ++i) {
+        std::cout << "\x1B[37m";
         std::cout << i << ' ';
-        std::cout << "name: " << poliz[i].getName() << ' ';
+        std::cout << "\x1B[0m";
+        std::cout << "\x1B[29m";
+        std::cout << poliz[i].getName() << ' ';
+        std::cout << "\033[0m";
+        std::cout << "\x1B[35m";
         std::cout << poliz[i].toString() << ' ';
-        std::cout << "ID: " << poliz[i].getId() << ' ';
+        std::cout << "\033[0m";
+        std::cout << "ID: ";
+        std::cout << "\x1B[37m";
+        std::cout << poliz[i].getId() << ' ';
+        std::cout << "\x1B[0m";
         if (poliz[i].getType() == LexemeType::PolizField) {
             std::cout << "field id: " << poliz[i].getFieldId();
         }
         std::cout << '\n';
     }
+    printf("\x1B[37mTexting\033[0m\t\t");
+    printf("\x1B[93mTexting\033[0m\n");
+
+    printf("\033[3;42;30mTexting\033[0m\t\t");
+    printf("\033[3;43;30mTexting\033[0m\t\t");
+    printf("\033[3;44;30mTexting\033[0m\t\t");
+    printf("\033[3;104;30mTexting\033[0m\t\t");
+    printf("\033[3;100;30mTexting\033[0m\n");
+
+    printf("\033[3;47;35mTexting\033[0m\t\t");
+    printf("\033[2;47;35mTexting\033[0m\t\t");
+    printf("\033[1;47;35mTexting\033[0m\t\t");
 }
 
 void Translator::startState() {
