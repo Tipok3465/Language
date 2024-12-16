@@ -38,7 +38,6 @@ void LexicalAnalyzer::createOperatorBor() {
 }
 
 
-
 Lexeme LexicalAnalyzer::getLexeme() {
     if (!pref_lexemes_.empty()) {
         Lexeme res = pref_lexemes_.top();
@@ -86,6 +85,8 @@ Lexeme LexicalAnalyzer::getLexeme() {
             c = getSymbol();
         }
         if (c != EOF) --cur_;
+        if (s == "and" or s == "or") return {s, LexemeType::Operator, line_ };
+        if (s == "true" or s == "false") return {s, LexemeType::BoolLiteral, line_};
         return {s,
                 serviceBor_.check(s) ? LexemeType::Service : LexemeType::Identifier,
                 line_};

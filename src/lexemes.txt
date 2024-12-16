@@ -13,8 +13,6 @@ void
 array
 string
 Main
-and
-or
 const
 break
 continue

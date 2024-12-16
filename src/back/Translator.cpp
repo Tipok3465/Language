@@ -540,8 +540,23 @@ void Translator::operatorState(LexemeType isFunc, bool isLoop) {
             generator_.setPos(pointer_id, pos);
             return;
         }
+
         lex_analyzer_.getBack(lexeme);
         operatorState(isFunc, isLoop);
+        lexeme = lex_analyzer_.getLexeme();
+        if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "else") {
+            lexeme = lex_analyzer_.getLexeme();
+            if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
+                lex_analyzer_.getBack(lexeme);
+                blockState(isFunc, isLoop);
+                int pos = generator_.getPos();
+                generator_.setPos(pointer_id, pos);
+                return;
+            }
+            lex_analyzer_.getBack(lexeme);
+            operatorState(isFunc, isLoop);
+        } else
+            lex_analyzer_.getBack(lexeme);
         int pos = generator_.getPos();
         generator_.setPos(pointer_id, pos);
         return;

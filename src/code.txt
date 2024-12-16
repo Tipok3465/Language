@@ -35,6 +35,8 @@ Main {
     float F = 1.0;
     //a = 1; // tests = input();
     integer ans;
+    if (1 or false) print(81);
+    else { print(13); }
     for (integer a = b/5; a <= b; --a) {
         string ans = "hihi";
         "print(ans)";
