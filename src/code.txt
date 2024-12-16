@@ -3,7 +3,7 @@ integer <- gcd(integer a, integer b) {
     integer x = 0;
     gcd(a % b, b);
     integer vz = arr[4];
-    if (vz > 0) {
+    if (vz > 0 and a > 0 or x < 0) {
         ++a;
         x = 3;
     }
@@ -11,7 +11,9 @@ integer <- gcd(integer a, integer b) {
         a = a % b;
     }
     switch (12) {
-        case (23) print(4);
+        case (3) print(222);
+        case (4) print(333);
+        default print(0);
     }
     for (integer a = -52; a > 0; ++a) {
         a = 3;

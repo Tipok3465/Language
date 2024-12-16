@@ -221,13 +221,7 @@ void Translator::calculationState() {
     Lexeme lexeme = lex_analyzer_.getLexeme();
     while (lexeme.getName() == "," && lexeme.getType() == LexemeType::Comma) {
         generator_.pushStack(lexeme);
-//        lex1.setType(LexemeType::OpenBrace);
-//        lex1.setName("(");
-//        generator_.pushStack(lex1);
         calc8State();
-//        lex1.setType(LexemeType::CloseBrace);
-//        lex1.setName(")");
-//        generator_.pushStack(lex1);
         lexeme = lex_analyzer_.getLexeme();
     }
     lex_analyzer_.getBack(lexeme);
@@ -238,6 +232,7 @@ void Translator::calc8State() {
     Lexeme lexeme = lex_analyzer_.getLexeme();
     while (lexeme.getName() == "or" && lexeme.getType() == LexemeType::Operator) {
         sem_stack_.push(lexeme);
+        generator_.pushStack(lexeme);
         calc7State();
         sem_stack_.checkBin();
         lexeme = lex_analyzer_.getLexeme();
@@ -745,7 +740,14 @@ void Translator::operatorState(LexemeType isFunc, bool isLoop) {
         Lexeme switchLexeme = lexeme;
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
+        Lexeme lex1;
+        lex1.setType(LexemeType::OpenBrace);
+        lex1.setName("(");
+        generator_.pushStack(lex1);
         calculationState();
+        lex1.setType(LexemeType::CloseBrace);
+        lex1.setName(")");
+        generator_.pushStack(lex1);
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
         lexeme = lex_analyzer_.getLexeme();
@@ -765,11 +767,47 @@ void Translator::operatorState(LexemeType isFunc, bool isLoop) {
 
 void Translator::switchState(LexemeType isFunc, bool isLoop) {
     Lexeme lexeme = lex_analyzer_.getLexeme();
+    std::vector<int> pos;
+    int pref = -1;
+    int cur;
     while (lexeme.getType() == LexemeType::Service && lexeme.getName() == "case") {
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::OpenBrace) throw lexeme;
+        Lexeme lex1;
+        cur = generator_.getPos();
+        lex1.setType(LexemeType::OpenBrace);
+        lex1.setName("(");
+        generator_.pushStack(lex1);
         calculationState();
+        lex1.setType(LexemeType::CloseBrace);
+        lex1.setName(")");
+        generator_.pushStack(lex1);
         sem_stack_.checkBin();
+        lex1.setType(LexemeType::SafeComparison);
+        lex1.setName("==");
+        generator_.pushPoliz(lex1);
+
+        lex1.setType(LexemeType::PolizField); // false case -> go to next case
+        lex1.setName("PolizField");
+        int p = generator_.getPos();
+        generator_.pushPoliz(lex1);
+        if (pref != -1) {
+            generator_.setPos(pref, cur);
+        }
+        pref = p;
+        lex1.setType(LexemeType::GoToFalse);
+        lex1.setName("GoToFalse");
+        generator_.pushPoliz(lex1);
+
+        lex1.setType(LexemeType::PolizField); // true case -> go to end of switch
+        lex1.setName("PolizField");
+        pos.push_back(generator_.getPos());
+        generator_.pushPoliz(lex1);
+
+        lex1.setType(LexemeType::GoToAnyway);
+        lex1.setName("GoToAnyway");
+        generator_.pushPoliz(lex1);
+
         lexeme = lex_analyzer_.getLexeme();
         if (lexeme.getType() != LexemeType::CloseBrace) throw lexeme;
         lexeme = lex_analyzer_.getLexeme();
@@ -784,18 +822,34 @@ void Translator::switchState(LexemeType isFunc, bool isLoop) {
     }
     if (lexeme.getType() == LexemeType::Service && lexeme.getName() == "default") {
         lexeme = lex_analyzer_.getLexeme();
+        int p = generator_.getPos();
+        if (pref != -1) {
+            generator_.setPos(pref, p);
+        }
         if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "{") {
             blockState(isFunc, isLoop);
             lexeme = lex_analyzer_.getLexeme();
             if (lexeme.getType() != LexemeType::Brace && lexeme.getName() != "}") throw lexeme;
+            int end_pos = generator_.getPos();
+            for (auto e : pos) {
+                generator_.setPos(e, end_pos);
+            }
             return;
         }
         lex_analyzer_.getBack(lexeme);
         operatorState(isFunc, isLoop);
+        int end_pos = generator_.getPos();
+        for (auto e : pos) {
+            generator_.setPos(e, end_pos);
+        }
         return;
     }
     if (lexeme.getType() == LexemeType::Brace && lexeme.getName() == "}") {
         lex_analyzer_.getBack(lexeme);
+        int end_pos = generator_.getPos();
+        for (auto e : pos) {
+            generator_.setPos(e, end_pos);
+        }
         return;
     }
     throw lexeme;

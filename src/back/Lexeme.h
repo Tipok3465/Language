@@ -30,7 +30,8 @@ enum class LexemeType {
     GoToAnyway,
     GoToFalse,
     Return,
-    UnaryMinus
+    UnaryMinus,
+    SafeComparison
 };
 
 class Lexeme {
@@ -110,6 +111,9 @@ public:
                 return s;
             case LexemeType::UnaryMinus:
                 s = "UnaryMinus";
+                return s;
+            case LexemeType::SafeComparison:
+                s = "SafeComparison";
                 return s;
         }
     }
